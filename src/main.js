@@ -8,5 +8,4 @@ const userProfilePresenter = new UserProfilePresenter({userProfileContainer: use
 const boardPresenter = new BoardPresenter({boardContainer: mainElement});
 
 userProfilePresenter.init();
-console.log(mainElement);
 boardPresenter.init();
