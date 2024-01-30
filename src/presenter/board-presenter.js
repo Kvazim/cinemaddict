@@ -1,6 +1,5 @@
 import { render } from '../framework/render';
 import FilmsBoardView from '../view/films-board-view';
-// import FilmsSectionView from '../view/films-section-view';
 import SortListView from '../view/sort-list-view';
 import FilterPresenter from './filter-presenter';
 
@@ -9,7 +8,6 @@ export default class BoardPresenter {
   #filterPresenter = null;
   #sortListView = null;
   #filmsBoardView = new FilmsBoardView();
-  // #filmsSectionView = new FilmsSectionView();
 
   constructor({boardContainer}) {
     this.#boardContainer = boardContainer;
