@@ -33,7 +33,7 @@ jobs:
           clean: true
           git-config-name: "keksobot"
           git-config-email: "github+keksobot@htmlacademy.ru"
-          target-folder: ${{ env.PR }}
+          branch: master
           commit-message: "✔️ Сборка #${{ env.PR }}"
 
       - name: Comment PR
