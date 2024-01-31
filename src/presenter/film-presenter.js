@@ -1,5 +1,5 @@
-import { render } from "../framework/render";
-import FilmCardView from "../view/film-card-view";
+import { render } from '../framework/render';
+import FilmCardView from '../view/film-card-view';
 
 export default class FilmPresenter {
   #filmsListContainer = null;
