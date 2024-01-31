@@ -16,10 +16,18 @@ const BaseUrl = {
 
 const AUTHORIZATION = 'Basic S3ZhemltOmthc2FuZHJh';
 
+const UpdateType = {
+  PATCH: 'PATCH',
+  MINOR: 'MINOR',
+  MAJOR: 'MAJOR',
+  INIT: 'INIT',
+};
+
 export {
   FILM_COUNT_PER_STEP,
   ApiMetod,
   SERVER_URL,
   BaseUrl,
   AUTHORIZATION,
+  UpdateType,
 };
