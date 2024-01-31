@@ -1,4 +1,4 @@
-export default function createFilmCardView() {
+export default function createFilmCardViewTemplate() {
   return (
     `<article class="film-card">
       <a class="film-card__link">

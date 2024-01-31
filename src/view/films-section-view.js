@@ -1,8 +1,8 @@
 import AbstractView from '../framework/view/abstract-view';
-import createFilmsSectionView from './templates/create-films-section-view';
+import createFilmsSectionViewTemplate from './templates/create-films-section-view-template';
 
 export default class FilmsSectionView extends AbstractView {
   get template() {
-    return createFilmsSectionView();
+    return createFilmsSectionViewTemplate();
   }
 }

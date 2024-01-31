@@ -1,9 +1,9 @@
 import AbstractView from '../framework/view/abstract-view';
-import createSortListView from './templates/create-sort-list-view';
+import createSortListViewTemplate from './templates/create-sort-list-view-template';
 
 export default class SortListView extends AbstractView {
   get template() {
-    return createSortListView();
+    return createSortListViewTemplate();
   }
 }
 
