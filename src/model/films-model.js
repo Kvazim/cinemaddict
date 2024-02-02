@@ -1,5 +1,5 @@
-import { UpdateType } from "../const";
-import Observable from "../framework/observable";
+import { UpdateType } from '../const';
+import Observable from '../framework/observable';
 
 export default class FilmsModel extends Observable {
   #cinemaddictApiService = null;
@@ -39,6 +39,29 @@ export default class FilmsModel extends Observable {
     return this.#isLoadingFailed;
   }
 
+  async updateFilm(updateType, update) {
+    const index = this.#films.findIndex((film) => film.id === update.id);
+
+    if (index === -1) {
+      throw new Error('Can\'t update unexisting film');
+    }
+
+    try {
+      const response = await this.#cinemaddictApiService.updateFilm(update);
+      const updatedFilm = this.#adaptToClient(response);
+
+      this.#films = [
+        ...this.#films.slice(0, index),
+        updatedFilm,
+        ...this.#films.slice(index + 1),
+      ];
+
+      this._notify(updateType, updatedFilm);
+    } catch(err) {
+      throw new Error('Can\'t update film');
+    }
+  }
+
   #adaptToClient(film) {
     const adaptedFilm = {
       ...film,
@@ -57,7 +80,7 @@ export default class FilmsModel extends Observable {
         alreadyWatched: film.user_details.already_watched,
         watchingDate: film.user_details.watching_date,
       },
-    }
+    };
 
     delete adaptedFilm.film_info;
     delete adaptedFilm.filmInfo.age_rating;

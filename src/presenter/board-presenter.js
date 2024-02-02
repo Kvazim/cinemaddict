@@ -1,6 +1,7 @@
-import { FILM_COUNT_PER_STEP } from '../const';
-import { UpdateType } from '../const';
+import { FILM_COUNT_PER_STEP, UserAction } from '../const';
+import { UpdateType, TimeLimit } from '../const';
 import { render, remove } from '../framework/render';
+import UiBlocker from '../framework/ui-blocker/ui-blocker';
 import FilmsBoardView from '../view/films-board-view';
 import FilmsListContainerView from '../view/films-list-container-view';
 import FilmsSectionView from '../view/films-section-view';
@@ -22,6 +23,10 @@ export default class BoardPresenter {
   #showMoreButtonComponent = null;
   #renderedFilmsCount = FILM_COUNT_PER_STEP;
   #filmPresenters = new Map();
+  #uiBlocker = new UiBlocker({
+    lowerLimit: TimeLimit.LOWER_LIMIT,
+    upperLimit: TimeLimit.UPPER_LIMIT,
+  });
 
   constructor({boardContainer, filmsModel}) {
     this.#boardContainer = boardContainer;
@@ -36,11 +41,11 @@ export default class BoardPresenter {
     this.#renderBoard();
   }
 
-  #handleModelEvent = (updateType /*, data*/) => {
+  #handleModelEvent = (updateType, data) => {
     switch (updateType) {
-      // case UpdateType.PATCH:
-      //   this.#taskPresenters.get(data.id).init(data);
-      //   break;
+      case UpdateType.PATCH:
+        this.#filmPresenters.get(data.id).init(data);
+        break;
       // case UpdateType.MINOR:
       //   this.#clearBoard();
       //   this.#renderBoard();
@@ -55,6 +60,29 @@ export default class BoardPresenter {
         break;
     }
   };
+
+  #handleActionView = async (actionType, updateType, update) => {
+    this.#uiBlocker.block();
+
+    switch (actionType) {
+      case UserAction.UPDATE_FILM:
+        // this.#filmPresenters.get(update.id).setSaving();
+        try {
+          await this.#filmsModel.updateFilm(updateType, update);
+        } catch (error) {
+          this.#filmPresenters.get(update.id).setAborting();
+        }
+        break;
+    }
+
+    this.#uiBlocker.unblock();
+  };
+
+  // #handleModeChange = () => {
+  //   // this.#newPointPresenter.destroy();
+  //   // this.#pointPresenters.forEach((pointPresenter) => pointPresenter.resetView());
+  //   this.#filmPresenters.forEach((filmPresenter) => filmPresenter.resetView());
+  // };
 
   get films() {
     // const films = this.#filmsModel.films;
@@ -86,9 +114,14 @@ export default class BoardPresenter {
   }
 
   #renderFilmCard(film) {
-    const filmPresenter = new FilmPresenter({filmsListContainer: this.#filmsListContainerView.element, film});
-    filmPresenter.init();
-    this.#filmPresenters.set(filmPresenter);
+    const filmPresenter = new FilmPresenter({
+      filmsListContainer: this.#filmsListContainerView.element,
+      onDataChange: this.#handleActionView,
+      // onModeChange: this.#handleModeChange,
+    });
+
+    filmPresenter.init(film);
+    this.#filmPresenters.set(film.id, filmPresenter);
   }
 
   #renderFilms(films) {

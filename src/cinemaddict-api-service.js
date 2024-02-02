@@ -66,6 +66,8 @@ export default class CinemaddictApiService extends ApiService {
     };
 
     delete adaptedFilm.filmInfo;
+    delete adaptedFilm.film_info.alternativeTitle;
+    delete adaptedFilm.filmInfo.totalRating;
     delete adaptedFilm.film_info.release.releaseCountry;
     delete adaptedFilm.userDetails;
 

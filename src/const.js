@@ -32,6 +32,18 @@ const DateFormat = {
   HOUR_MINUTES: 'H[h] mm[m]',
 };
 
+const UserAction = {
+  UPDATE_FILM: 'UPDATE_FILM',
+  ADD_COMMENT: 'ADD_COMMENT',
+  DELETE_COMMENT: 'DELETE_COMMENT',
+  UPDATE_POPUP: 'UPDATE_POPUP',
+};
+
+const TimeLimit = {
+  LOWER_LIMIT: 350,
+  UPPER_LIMIT: 1000,
+};
+
 export {
   FILM_COUNT_PER_STEP,
   ApiMetod,
@@ -43,4 +55,6 @@ export {
   MINUTES_IN_HOUR,
   MIN,
   MAX_SHORT_DESCRIPTION_LENGTH,
+  UserAction,
+  TimeLimit,
 };
