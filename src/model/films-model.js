@@ -47,6 +47,7 @@ export default class FilmsModel extends Observable {
     }
 
     try {
+      // console.log(this.#cinemaddictApiService.updateFilm(update));
       const response = await this.#cinemaddictApiService.updateFilm(update);
       const updatedFilm = this.#adaptToClient(response);
 
