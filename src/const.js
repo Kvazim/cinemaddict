@@ -1,4 +1,7 @@
 const FILM_COUNT_PER_STEP = 5;
+const MINUTES_IN_HOUR = 60;
+const MIN = 0;
+const MAX_SHORT_DESCRIPTION_LENGTH = 140;
 
 const ApiMetod = {
   GET: 'GET',
@@ -23,6 +26,12 @@ const UpdateType = {
   INIT: 'INIT',
 };
 
+const DateFormat = {
+  DATE_YEAR: 'YYYY',
+  MINUTES: 'mm[m]',
+  HOUR_MINUTES: 'H[h] mm[m]',
+};
+
 export {
   FILM_COUNT_PER_STEP,
   ApiMetod,
@@ -30,4 +39,8 @@ export {
   BaseUrl,
   AUTHORIZATION,
   UpdateType,
+  DateFormat,
+  MINUTES_IN_HOUR,
+  MIN,
+  MAX_SHORT_DESCRIPTION_LENGTH,
 };

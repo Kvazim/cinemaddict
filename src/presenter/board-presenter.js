@@ -36,7 +36,7 @@ export default class BoardPresenter {
     this.#renderBoard();
   }
 
-  #handleModelEvent = (updateType, data) => {
+  #handleModelEvent = (updateType /*, data*/) => {
     switch (updateType) {
       // case UpdateType.PATCH:
       //   this.#taskPresenters.get(data.id).init(data);
@@ -85,8 +85,8 @@ export default class BoardPresenter {
     render(this.#filmsTitleComponent, this.#filmsSectionView.element);
   }
 
-  #renderFilmCard() {
-    const filmPresenter = new FilmPresenter({filmsListContainer: this.#filmsListContainerView.element});
+  #renderFilmCard(film) {
+    const filmPresenter = new FilmPresenter({filmsListContainer: this.#filmsListContainerView.element, film});
     filmPresenter.init();
     this.#filmPresenters.set(filmPresenter);
   }

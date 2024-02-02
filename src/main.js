@@ -9,8 +9,6 @@ const mainElement = document.querySelector('.main');
 
 const filmsModel = new FilmsModel({cinemaddictApiService: new CinemaddictApiService(SERVER_URL, AUTHORIZATION)});
 
-
-
 const userProfilePresenter = new UserProfilePresenter({userProfileContainer: userProfile});
 const boardPresenter = new BoardPresenter({boardContainer: mainElement, filmsModel});
 

@@ -1,12 +1,12 @@
-import { ApiMetod, BaseUrl } from "./const";
-import ApiService from "./framework/api-service";
+import { ApiMetod, BaseUrl } from './const';
+import ApiService from './framework/api-service';
 
 export default class CinemaddictApiService extends ApiService {
   get films() {
     return this._load({url: BaseUrl.MOVIES}).then(ApiService.parseResponse);
   }
 
-  async  getComments(film) {
+  async getComments(film) {
     return this._load({url: `${BaseUrl.COMMENTS}/${film}`}).then(ApiService.parseResponse);
   }
 
@@ -63,7 +63,7 @@ export default class CinemaddictApiService extends ApiService {
         'already_watched': film.userDetails.alreadyWatched,
         'watching_date': film.userDetails.watchingDate,
       },
-    }
+    };
 
     delete adaptedFilm.filmInfo;
     delete adaptedFilm.film_info.release.releaseCountry;
