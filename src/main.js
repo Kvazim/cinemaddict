@@ -11,7 +11,7 @@ const mainElement = document.querySelector('.main');
 const filmsModel = new FilmsModel({cinemaddictApiService: new CinemaddictApiService(SERVER_URL, AUTHORIZATION)});
 const filterModel = new FilterModel();
 
-const userProfilePresenter = new UserProfilePresenter({userProfileContainer: userProfile});
+const userProfilePresenter = new UserProfilePresenter({userProfileContainer: userProfile, filmsModel});
 const boardPresenter = new BoardPresenter({boardContainer: mainElement, filmsModel, filterModel});
 
 filmsModel.init();

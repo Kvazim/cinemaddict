@@ -13,6 +13,20 @@ const getAlreadyWatchedFilm = (film) => film.userDetails.alreadyWatched === true
 const getWatchlistFilm = (film) => film.userDetails.watchlist === true;
 const capitalize = (item) => item.charAt(0).toUpperCase() + item.substring(1);
 const sortByRating = (filmFirst, filmSecond) => filmSecond.filmInfo.totalRating - filmFirst.filmInfo.totalRating;
+const getWatchedFilms = (films) => films.filter((film) => film.userDetails.alreadyWatched === true).length;
+
+const userRank = (filmsCount) => {
+  switch (true) {
+    case filmsCount > 0 && filmsCount <= 10:
+      return'novice';
+    case filmsCount > 10 && filmsCount <= 20:
+      return'fan';
+    case filmsCount > 20:
+      return'movie buff';
+  }
+
+  return '';
+};
 
 export {
   generateDescription,
@@ -21,5 +35,7 @@ export {
   getAlreadyWatchedFilm,
   getWatchlistFilm,
   capitalize,
-  sortByRating
+  sortByRating,
+  getWatchedFilms,
+  userRank,
 };

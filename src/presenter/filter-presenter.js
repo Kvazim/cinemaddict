@@ -14,7 +14,7 @@ export default class FilterPresenter {
     this.#filmsModel = filmsModel;
     this.#filterModel = filterModel;
 
-    this.#filterModel.addObserver(this.#modelEventHandler);
+    this.#filterModel.addObserver(this.#handleModelEvent);
 
   }
 
@@ -46,9 +46,7 @@ export default class FilterPresenter {
     remove(prevFilterComponent);
   }
 
-  #modelEventHandler = () => {
-    this.init();
-  };
+  #handleModelEvent = () => this.init();
 
   #filterTypeChangeHandler = (filterType) => {
     this.#filterModel.setFilter(UpdateType.MAJOR, filterType);

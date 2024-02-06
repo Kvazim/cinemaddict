@@ -9,6 +9,7 @@ import FilmsSectionView from '../view/films-section-view';
 import FilmsTitleView from '../view/films-title-view';
 import SortListView from '../view/sort-list-view';
 import ShowMoreButtonView from '../view/show-more-button-view';
+import FooterView from '../view/footer-view';
 import FilmPresenter from './film-presenter';
 import FilterPresenter from './filter-presenter';
 import { sortByDate } from '../utils/date';
@@ -77,6 +78,7 @@ export default class BoardPresenter {
       case UpdateType.INIT:
         // remove(this.#loadingComponent);
         this.#renderBoard();
+        this.#renderFooterFilmStatistic();
         break;
     }
   };
@@ -145,6 +147,8 @@ export default class BoardPresenter {
     });
     render(this.#sortListView, this.#boardContainer);
   }
+
+  #renderFooterFilmStatistic = () => render(new FooterView({filmsCount: this.films.length}), document.querySelector('.footer__statistics'));
 
   #renderFilmsTitle() {
     this.#filmsTitleComponent = new FilmsTitleView();
