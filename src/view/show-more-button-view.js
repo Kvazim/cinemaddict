@@ -1,5 +1,5 @@
-import AbstractView from "../framework/view/abstract-view";
-import createShowMoreButtonTemplate from "./templates/create-show-more-button-template";
+import AbstractView from '../framework/view/abstract-view';
+import createShowMoreButtonTemplate from './templates/create-show-more-button-template';
 
 export default class ShowMoreButtonView extends AbstractView {
   #handleClick = null;
@@ -8,7 +8,7 @@ export default class ShowMoreButtonView extends AbstractView {
     super();
 
     this.#handleClick = onClick;
-    this.element.addEventListener('click', this.#clickMoreButtonHandler)
+    this.element.addEventListener('click', this.#clickMoreButtonHandler);
   }
 
   get template() {
@@ -18,5 +18,5 @@ export default class ShowMoreButtonView extends AbstractView {
   #clickMoreButtonHandler = (evt) => {
     evt.preventDefault();
     this.#handleClick();
-  }
+  };
 }

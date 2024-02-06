@@ -1,18 +1,41 @@
+import { FiltersType, UpdateType } from '../const';
 import { RenderPosition, remove, render, replace } from '../framework/render';
-import FilterListView from '../view/filter-view';
+import { filter } from '../utils/filter';
+import FilterListView from '../view/filter-list-view';
 
 export default class FilterPresenter {
   #filterContainer = null;
   #filterComponent = null;
+  #filmsModel = null;
+  #filterModel = null;
 
-  constructor({filterContainer}) {
+  constructor({filterContainer, filmsModel, filterModel}) {
     this.#filterContainer = filterContainer;
+    this.#filmsModel = filmsModel;
+    this.#filterModel = filterModel;
+
+    this.#filterModel.addObserver(this.#modelEventHandler);
+
+  }
+
+  get filters() {
+    const films = this.#filmsModel.films;
+
+    return Object.values(FiltersType).map((type) => ({
+      type,
+      count: filter[type](films).length
+    }));
   }
 
   init() {
+    const filters = this.filters;
     const prevFilterComponent = this.#filterComponent;
 
-    this.#filterComponent = new FilterListView();
+    this.#filterComponent = new FilterListView({
+      filters,
+      currentFilterType: this.#filterModel.filter,
+      onFilterTypeChange: this.#filterTypeChangeHandler
+    });
 
     if (prevFilterComponent === null) {
       render(this.#filterComponent, this.#filterContainer, RenderPosition.AFTERBEGIN);
@@ -22,4 +45,12 @@ export default class FilterPresenter {
     replace(this.#filterComponent, prevFilterComponent);
     remove(prevFilterComponent);
   }
+
+  #modelEventHandler = () => {
+    this.init();
+  };
+
+  #filterTypeChangeHandler = (filterType) => {
+    this.#filterModel.setFilter(UpdateType.MAJOR, filterType);
+  };
 }

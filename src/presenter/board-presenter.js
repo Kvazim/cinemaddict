@@ -1,5 +1,6 @@
-import { FILM_COUNT_PER_STEP, UserAction } from '../const';
+import { FILM_COUNT_PER_STEP, FiltersType, UserAction } from '../const';
 import { UpdateType, TimeLimit } from '../const';
+import { filter } from '../utils/filter';
 import { render, remove } from '../framework/render';
 import UiBlocker from '../framework/ui-blocker/ui-blocker';
 import FilmsBoardView from '../view/films-board-view';
@@ -17,6 +18,8 @@ export default class BoardPresenter {
   #sortListView = null;
   #filmsModel = null;
   #filmsTitleComponent = null;
+  #filterModel = null;
+  #filterType = FiltersType.ALL;
   #filmsBoardView = new FilmsBoardView();
   #filmsSectionView = new FilmsSectionView();
   #filmsListContainerView = new FilmsListContainerView();
@@ -28,14 +31,28 @@ export default class BoardPresenter {
     upperLimit: TimeLimit.UPPER_LIMIT,
   });
 
-  constructor({boardContainer, filmsModel}) {
+  constructor({boardContainer, filmsModel, filterModel}) {
     this.#boardContainer = boardContainer;
     this.#filmsModel = filmsModel;
+    this.#filterModel = filterModel;
 
-    this.#filterPresenter = new FilterPresenter({filterContainer: this.#boardContainer});
+    this.#filterPresenter = new FilterPresenter({filterContainer: this.#boardContainer, filmsModel: this.#filmsModel, filterModel: this.#filterModel});
 
     this.#filmsModel.addObserver(this.#handleModelEvent);
+    this.#filterModel.addObserver(this.#handleModelEvent);
   }
+
+  // createPoint() {
+  // this.#currentSortType = SortType.DAY;
+  // this.#filterModel.setFilter(UpdateType.MAJOR, FilterType.EVERYTHING);
+
+  // if (this.#systemMessageComponent) {
+  //   render(this.#weapointListView, this.#boardContainer);
+  //   remove(this.#systemMessageComponent);
+  // }
+
+  //   this.#newPointPresenter.init();
+  // }
 
   init() {
     this.#renderBoard();
@@ -85,8 +102,10 @@ export default class BoardPresenter {
   // };
 
   get films() {
-    // const films = this.#filmsModel.films;
-    return this.#filmsModel.films;
+    this.#filterType = this.#filterModel.filter;
+    const films = this.#filmsModel.films;
+    const filteredfilm = filter[this.#filterType](films);
+    return filteredfilm;
   }
 
   #handleShowMoreButtonClick = () => {

@@ -8,8 +8,16 @@ const generateDescription = (description) => {
 };
 
 const getActiveButton = (param) => param ? 'film-card__controls-item--active' : '';
+const getFavoritesFilm = (film) => film.userDetails.favorite === true;
+const getAlreadyWatchedFilm = (film) => film.userDetails.alreadyWatched === true;
+const getWatchlistFilm = (film) => film.userDetails.watchlist === true;
+const capitalize = (item) => item.charAt(0).toUpperCase() + item.substring(1);
 
 export {
   generateDescription,
   getActiveButton,
+  getFavoritesFilm,
+  getAlreadyWatchedFilm,
+  getWatchlistFilm,
+  capitalize,
 };

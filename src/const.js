@@ -44,6 +44,13 @@ const TimeLimit = {
   UPPER_LIMIT: 1000,
 };
 
+const FiltersType = {
+  ALL: 'all',
+  WATCHLIST: 'watchlist',
+  HISTORY: 'history',
+  FAVORITES: 'favorites'
+};
+
 export {
   FILM_COUNT_PER_STEP,
   ApiMetod,
@@ -57,4 +64,5 @@ export {
   MAX_SHORT_DESCRIPTION_LENGTH,
   UserAction,
   TimeLimit,
+  FiltersType,
 };

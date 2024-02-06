@@ -1,10 +1,22 @@
-export default function createFilterListTemplate() {
+import { FiltersType } from '../../const';
+import { capitalize } from '../../utils/common';
+
+function createFilterItemCountTemplate(count) {
+  return `<span class="main-navigation__item-count">${count}</span>`;
+}
+
+function createFilterItemTemplate(filter, currentFilter) {
+  const {type, count} = filter;
+  const isActive = type === currentFilter ? 'main-navigation__item--active' : '';
+  const isAll = type === FiltersType.ALL ? `${FiltersType.ALL} movies` : type;
+
+  return `<a href="#${type}" class="main-navigation__item ${isActive}">${capitalize(isAll)} ${type === FiltersType.ALL ? '' : createFilterItemCountTemplate(count)}</a>`;
+}
+
+export default function createFilterListTemplate(filters, currentFilter) {
   return (
     `<nav class="main-navigation">
-      <a href="#all" class="main-navigation__item main-navigation__item--active">All movies</a>
-      <a href="#watchlist" class="main-navigation__item">Watchlist <span class="main-navigation__item-count">13</span></a>
-      <a href="#history" class="main-navigation__item">History <span class="main-navigation__item-count">4</span></a>
-      <a href="#favorites" class="main-navigation__item">Favorites <span class="main-navigation__item-count">8</span></a>
+      ${filters.map((filter) => createFilterItemTemplate(filter, currentFilter)).join('')}
     </nav>`
   );
 }
