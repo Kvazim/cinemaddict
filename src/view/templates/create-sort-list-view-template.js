@@ -1,9 +1,13 @@
-export default function createSortListViewTemplate() {
+import { SortType } from '../../const';
+
+function createSortItemTemplate(type, currentSortType = '') {
+  return `<li><a href="#${type}" class="sort__button ${currentSortType === type ? 'sort__button--active' : ''}">Sort by ${type}</a></li>`;
+}
+
+export default function createSortListViewTemplate(currentSortType) {
   return (
     `<ul class="sort">
-      <li><a href="#" class="sort__button sort__button--active">Sort by default</a></li>
-      <li><a href="#" class="sort__button">Sort by date</a></li>
-      <li><a href="#" class="sort__button">Sort by rating</a></li>
+      ${Object.values(SortType).map((type) => createSortItemTemplate(type, currentSortType)).join('')}
     </ul>`
   );
 }

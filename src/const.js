@@ -48,7 +48,13 @@ const FiltersType = {
   ALL: 'all',
   WATCHLIST: 'watchlist',
   HISTORY: 'history',
-  FAVORITES: 'favorites'
+  FAVORITES: 'favorites',
+};
+
+const SortType = {
+  DEFAULT: 'default',
+  DATE: 'date',
+  RATING: 'rating',
 };
 
 export {
@@ -65,4 +71,5 @@ export {
   UserAction,
   TimeLimit,
   FiltersType,
+  SortType,
 };

@@ -12,6 +12,7 @@ const getFavoritesFilm = (film) => film.userDetails.favorite === true;
 const getAlreadyWatchedFilm = (film) => film.userDetails.alreadyWatched === true;
 const getWatchlistFilm = (film) => film.userDetails.watchlist === true;
 const capitalize = (item) => item.charAt(0).toUpperCase() + item.substring(1);
+const sortByRating = (filmFirst, filmSecond) => filmSecond.filmInfo.totalRating - filmFirst.filmInfo.totalRating;
 
 export {
   generateDescription,
@@ -20,4 +21,5 @@ export {
   getAlreadyWatchedFilm,
   getWatchlistFilm,
   capitalize,
+  sortByRating
 };

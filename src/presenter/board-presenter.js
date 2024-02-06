@@ -1,4 +1,4 @@
-import { FILM_COUNT_PER_STEP, FiltersType, UserAction } from '../const';
+import { FILM_COUNT_PER_STEP, FiltersType, SortType, UserAction } from '../const';
 import { UpdateType, TimeLimit } from '../const';
 import { filter } from '../utils/filter';
 import { render, remove } from '../framework/render';
@@ -11,6 +11,8 @@ import SortListView from '../view/sort-list-view';
 import ShowMoreButtonView from '../view/show-more-button-view';
 import FilmPresenter from './film-presenter';
 import FilterPresenter from './filter-presenter';
+import { sortByDate } from '../utils/date';
+import { sortByRating } from '../utils/common';
 
 export default class BoardPresenter {
   #boardContainer = null;
@@ -20,6 +22,7 @@ export default class BoardPresenter {
   #filmsTitleComponent = null;
   #filterModel = null;
   #filterType = FiltersType.ALL;
+  #currentSortType = SortType.DEFAULT;
   #filmsBoardView = new FilmsBoardView();
   #filmsSectionView = new FilmsSectionView();
   #filmsListContainerView = new FilmsListContainerView();
@@ -67,10 +70,10 @@ export default class BoardPresenter {
       //   this.#clearBoard();
       //   this.#renderBoard();
       //   break;
-      // case UpdateType.MAJOR:
-      //   this.#clearBoard({resetRenderedTaskCount: true, resetSortType: true});
-      //   this.#renderBoard();
-      //   break;
+      case UpdateType.MAJOR:
+        this.#clearBoard({resetSortType: true});
+        this.#renderBoard();
+        break;
       case UpdateType.INIT:
         // remove(this.#loadingComponent);
         this.#renderBoard();
@@ -105,6 +108,14 @@ export default class BoardPresenter {
     this.#filterType = this.#filterModel.filter;
     const films = this.#filmsModel.films;
     const filteredfilm = filter[this.#filterType](films);
+
+    switch (this.#currentSortType) {
+      case SortType.DATE:
+        return [...filteredfilm].sort(sortByDate);
+      case SortType.RATING:
+        return [...filteredfilm].sort(sortByRating);
+    }
+
     return filteredfilm;
   }
 
@@ -121,8 +132,17 @@ export default class BoardPresenter {
     }
   };
 
+  #sortTypeChangeHandler = (sortType) => {
+    this.#currentSortType = sortType;
+    this.#clearBoard();
+    this.#renderBoard();
+  };
+
   #renderSort() {
-    this.#sortListView = new SortListView();
+    this.#sortListView = new SortListView({
+      currentSortType: this.#currentSortType,
+      onSortTypeChange: this.#sortTypeChangeHandler,
+    });
     render(this.#sortListView, this.#boardContainer);
   }
 
@@ -150,6 +170,24 @@ export default class BoardPresenter {
   #renderShowMoreButton() {
     this.#showMoreButtonComponent = new ShowMoreButtonView({onClick: this.#handleShowMoreButtonClick});
     render(this.#showMoreButtonComponent, this.#filmsSectionView.element);
+  }
+
+  #clearBoard({resetSortType = false} = {}) {
+    this.#filmPresenters.forEach((presenter) => presenter.destroy());
+    this.#filmPresenters.clear();
+
+    remove(this.#sortListView);
+    remove(this.#filmsSectionView);
+    remove(this.#filmsTitleComponent);
+    remove(this.#showMoreButtonComponent);
+
+    // if (this.#systemMessageComponent) {
+    //   remove(this.#systemMessageComponent);
+    // }
+
+    if(resetSortType) {
+      this.#currentSortType = SortType.DEFAULT;
+    }
   }
 
   #renderBoard() {

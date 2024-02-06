@@ -22,7 +22,10 @@ function getCalculateDuration(minutes) {
   }
 }
 
+const sortByDate = (dateFirst, dateSekond) => dayjs(dateSekond.filmInfo.release.date) - dayjs(dateFirst.filmInfo.release.date);
+
 export {
   humanizeDate,
   getCalculateDuration,
+  sortByDate,
 };

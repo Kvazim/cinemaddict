@@ -1,6 +1,7 @@
-import { render, replace } from '../framework/render';
+import { remove, render, replace } from '../framework/render';
 import FilmCardView from '../view/film-card-view';
 import { UpdateType, UserAction } from '../const';
+import dayjs from 'dayjs';
 
 export default class FilmPresenter {
   #filmsListContainer = null;
@@ -36,7 +37,8 @@ export default class FilmPresenter {
         ...this.#film,
         userDetails: {
           ...this.#film.userDetails,
-          alreadyWatched: !this.#film.userDetails.alreadyWatched
+          alreadyWatched: !this.#film.userDetails.alreadyWatched,
+          watchingDate: !this.#film.userDetails.alreadyWatched ? dayjs().toISOString() : null
         }
       },
     );
@@ -73,6 +75,10 @@ export default class FilmPresenter {
     }
 
     replace(this.#filmComponent, prevCardFilmComponent);
+  }
+
+  destroy() {
+    remove(this.#filmComponent);
   }
 
   setSaving() {
