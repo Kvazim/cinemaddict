@@ -57,6 +57,18 @@ const SortType = {
   RATING: 'rating',
 };
 
+const SystemMessageLoad = {
+  LOAD: 'Loading...',
+  FAILED_LOAD: 'Failed to load',
+};
+
+const SystemMessageList = {
+  [FiltersType.ALL]: 'There are no movies in our database',
+  [FiltersType.WATCHLIST]: 'There are no movies to watch now',
+  [FiltersType.HISTORY]: 'There are no watched movies now',
+  [FiltersType.FAVORITES]: 'There are no favorite movies now',
+};
+
 export {
   FILM_COUNT_PER_STEP,
   ApiMetod,
@@ -72,4 +84,6 @@ export {
   TimeLimit,
   FiltersType,
   SortType,
+  SystemMessageLoad,
+  SystemMessageList,
 };

@@ -1,3 +1,14 @@
-export default function createFilmsTitleViewTemplate() {
-  return '<h2 class="films-list__title">There are no movies in our database</h2>';
+import { FiltersType } from '../../const';
+
+export default function createFilmsTitleViewTemplate(message) {
+  const isHidden = Object.values(FiltersType).includes(message);
+  const isAll;
+  if (isHidden) {
+    isAll = message === FiltersType.ALL ? `${FiltersType.ALL} movies` : message;
+    return isAll;
+  }
+
+  //All movies. Upcoming
+  // console.log(isAll);
+  return `<h2 class="films-list__title ${isHidden ? 'visually-hidden' : ''}">${message}</h2>`;
 }

@@ -1,4 +1,4 @@
-import { FILM_COUNT_PER_STEP, FiltersType, SortType, UserAction } from '../const';
+import { FILM_COUNT_PER_STEP, FiltersType, SortType, SystemMessageLoad, SystemMessageList, UserAction } from '../const';
 import { UpdateType, TimeLimit } from '../const';
 import { filter } from '../utils/filter';
 import { render, remove } from '../framework/render';
@@ -27,6 +27,7 @@ export default class BoardPresenter {
   #filmsBoardView = new FilmsBoardView();
   #filmsSectionView = new FilmsSectionView();
   #filmsListContainerView = new FilmsListContainerView();
+  #systemMessageComponent = null;
   #showMoreButtonComponent = null;
   #renderedFilmsCount = FILM_COUNT_PER_STEP;
   #filmPresenters = new Map();
@@ -76,7 +77,7 @@ export default class BoardPresenter {
         this.#renderBoard();
         break;
       case UpdateType.INIT:
-        // remove(this.#loadingComponent);
+        this.#removeSystemMessage();
         this.#renderBoard();
         this.#renderFooterFilmStatistic();
         break;
@@ -150,8 +151,8 @@ export default class BoardPresenter {
 
   #renderFooterFilmStatistic = () => render(new FooterView({filmsCount: this.films.length}), document.querySelector('.footer__statistics'));
 
-  #renderFilmsTitle() {
-    this.#filmsTitleComponent = new FilmsTitleView();
+  #renderFilmsTitle(message) {
+    this.#filmsTitleComponent = new FilmsTitleView({message});
 
     render(this.#filmsTitleComponent, this.#filmsSectionView.element);
   }
@@ -194,23 +195,44 @@ export default class BoardPresenter {
     }
   }
 
+  #renderSystemMessage(message) {
+    render(this.#filmsBoardView, this.#boardContainer);
+    render(this.#filmsSectionView, this.#filmsBoardView.element);
+    this.#renderFilmsTitle(message);
+  }
+
+  #removeSystemMessage() {
+    remove(this.#filmsBoardView);
+    remove(this.#filmsSectionView);
+    remove(this.#filmsTitleComponent);
+  }
+
   #renderBoard() {
     this.#filterPresenter.init();
 
+    const films = this.films;
+    const filmsCount = films.length;
+
     if (this.#filmsModel.loadingFilms) {
+      this.#renderSystemMessage(SystemMessageLoad.LOAD);
+      return;
+    }
+
+    if (this.#filmsModel.loadingFailedFilms) {
+      this.#renderSystemMessage(SystemMessageLoad.FAILED_LOAD);
+      return;
+    }
+
+    if (this.filmsCount === 0) {
+      this.#renderSystemMessage(SystemMessageList[this.#filterType]);
       return;
     }
 
     this.#renderSort();
     render(this.#filmsBoardView, this.#boardContainer);
     render(this.#filmsSectionView, this.#filmsBoardView.element);
-    this.#renderFilmsTitle();
+    this.#renderFilmsTitle(this.#filterType);
     render(this.#filmsListContainerView, this.#filmsSectionView.element);
-
-
-    const films = this.films;
-    const filmsCount = films.length;
-
 
     this.#renderFilms(films.slice(0, Math.min(filmsCount, this.#renderedFilmsCount)));
 
