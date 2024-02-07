@@ -186,10 +186,6 @@ export default class BoardPresenter {
     remove(this.#filmsTitleComponent);
     remove(this.#showMoreButtonComponent);
 
-    // if (this.#systemMessageComponent) {
-    //   remove(this.#systemMessageComponent);
-    // }
-
     if(resetSortType) {
       this.#currentSortType = SortType.DEFAULT;
     }
