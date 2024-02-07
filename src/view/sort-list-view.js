@@ -21,9 +21,11 @@ export default class SortListView extends AbstractView {
   #sortListClickHandler = (evt) => {
     evt.preventDefault();
 
-    if (evt.target.getAttribute('href') !== null) {
-      this.#handleSortTypeChange(evt.target.getAttribute('href').substring(1));
+    if (evt.target.tagName !== 'A' || evt.target.getAttribute('href') === null) {
+      return;
     }
+
+    this.#handleSortTypeChange(evt.target.getAttribute('href').substring(1));
   };
 }
 

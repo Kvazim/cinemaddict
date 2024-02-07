@@ -23,9 +23,13 @@ export default class FilterListView extends AbstractView {
   #filterTypeChangeHandler = (evt) => {
     evt.preventDefault();
     // TODO достаточно ли такой проверки?
-    if (evt.target.getAttribute('href') !== null) {
-      this.#handleFilterTypeChange(evt.target.getAttribute('href').substring(1));
+
+    if (evt.target.tagName !== 'A' || evt.target.getAttribute('href') === null) {
+      return;
     }
+
+    this.#handleFilterTypeChange(evt.target.getAttribute('href').substring(1));
+
   };
 }
 
