@@ -15,47 +15,46 @@ export default class FilmPresenter {
     this.#dataChangeHandler = onDataChange;
   }
 
-  #handleAddToWatchlistClick = () => {
-    this.#dataChangeHandler(
-      UserAction.UPDATE_FILM,
-      UpdateType.PATCH,
-      {
-        ...this.#film,
-        userDetails: {
-          ...this.#film.userDetails,
-          watchlist: !this.#film.userDetails.watchlist
-        }
-      },
-    );
-  };
-
-  #handleWatchedClick = () => {
-    this.#dataChangeHandler(
-      UserAction.UPDATE_FILM,
-      UpdateType.PATCH,
-      {
-        ...this.#film,
-        userDetails: {
-          ...this.#film.userDetails,
-          alreadyWatched: !this.#film.userDetails.alreadyWatched,
-          watchingDate: !this.#film.userDetails.alreadyWatched ? dayjs().toISOString() : null
-        }
-      },
-    );
-  };
-
-  #handleFavoritClick = () => {
-    this.#dataChangeHandler(
-      UserAction.UPDATE_FILM,
-      UpdateType.PATCH,
-      {
-        ...this.#film,
-        userDetails: {
-          ...this.#film.userDetails,
-          favorite: !this.#film.userDetails.favorite
-        }
-      },
-    );
+  #handleButtonControlsClick = (evt) => {
+    switch (true) {
+      case evt.target.classList.contains('film-card__controls-item--favorite'):
+        return this.#dataChangeHandler(
+          UserAction.UPDATE_FILM,
+          UpdateType.PATCH,
+          {
+            ...this.#film,
+            userDetails: {
+              ...this.#film.userDetails,
+              favorite: !this.#film.userDetails.favorite
+            }
+          },
+        );
+      case evt.target.classList.contains('film-card__controls-item--add-to-watchlist'):
+        return this.#dataChangeHandler(
+          UserAction.UPDATE_FILM,
+          UpdateType.PATCH,
+          {
+            ...this.#film,
+            userDetails: {
+              ...this.#film.userDetails,
+              watchlist: !this.#film.userDetails.watchlist
+            }
+          },
+        );
+      case evt.target.classList.contains('film-card__controls-item--mark-as-watched'):
+        return this.#dataChangeHandler(
+          UserAction.UPDATE_FILM,
+          UpdateType.PATCH,
+          {
+            ...this.#film,
+            userDetails: {
+              ...this.#film.userDetails,
+              alreadyWatched: !this.#film.userDetails.alreadyWatched,
+              watchingDate: !this.#film.userDetails.alreadyWatched ? dayjs().toISOString() : null
+            }
+          },
+        );
+    }
   };
 
   init(film) {
@@ -64,9 +63,7 @@ export default class FilmPresenter {
 
     this.#filmComponent = new FilmCardView({
       film: this.#film,
-      onAddWatchlistClick: this.#handleAddToWatchlistClick,
-      onWatchedClick: this.#handleWatchedClick,
-      onFavoritClick: this.#handleFavoritClick
+      onButtonControlsClick: this.#handleButtonControlsClick,
     });
 
     if (prevCardFilmComponent === null) {

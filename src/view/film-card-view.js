@@ -3,36 +3,20 @@ import createFilmCardViewTemplate from './templates/create-film-card-view-templa
 
 export default class FilmCardView extends AbstractView {
   #film = null;
-  #handleAddToWatchlistClick = null;
-  #handleWatchedClick = null;
-  #handleFavoritClick = null;
+  #handleButtonControlsClick = null;
 
-  constructor({film, onAddWatchlistClick, onWatchedClick, onFavoritClick}) {
+  constructor({film, onButtonControlsClick}) {
     super();
 
     this.#film = film;
-    this.#handleAddToWatchlistClick = onAddWatchlistClick;
-    this.#handleWatchedClick = onWatchedClick;
-    this.#handleFavoritClick = onFavoritClick;
+    this.#handleButtonControlsClick = onButtonControlsClick;
 
-    this.element.querySelector('.film-card__controls-item--add-to-watchlist').addEventListener('click', this.#buttonAddToWatchlistClickHandler);
-    this.element.querySelector('.film-card__controls-item--mark-as-watched').addEventListener('click', this.#buttonWatchedClickHandler);
-    this.element.querySelector('.film-card__controls-item--favorite').addEventListener('click', this.#buttonFavoritClickHandler);
+    this.element.querySelector('.film-card__controls').addEventListener('click', this.#buttonControlsClickHandler);
   }
 
-  #buttonAddToWatchlistClickHandler = (evt) => {
+  #buttonControlsClickHandler = (evt) => {
     evt.preventDefault();
-    this.#handleAddToWatchlistClick();
-  };
-
-  #buttonWatchedClickHandler = (evt) => {
-    evt.preventDefault();
-    this.#handleWatchedClick();
-  };
-
-  #buttonFavoritClickHandler = (evt) => {
-    evt.preventDefault();
-    this.#handleFavoritClick();
+    this.#handleButtonControlsClick(evt);
   };
 
   get template() {
