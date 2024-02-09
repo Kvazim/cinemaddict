@@ -7,17 +7,19 @@ export default class PopupPresenter {
   #popupComponent = null;
   // #destroyHandler = null;
   #film = null;
+  // #comments = [];
 
   constructor({popupContainer}) {
     this.#popupContainer = popupContainer;
   }
 
-  init(films, id) {
+  init(films, id, comments) {
     this.#film = getFilmById(films, id);
+    // this.#comments = comments;
 
     const prevPopupComponent = this.#popupComponent;
 
-    this.#popupComponent = new PopupView({onCloseButtonClick: this.#handleCloseButtonClick, film: this.#film});
+    this.#popupComponent = new PopupView({onCloseButtonClick: this.#handleCloseButtonClick, film: this.#film, comments});
 
     if (prevPopupComponent === null) {
       render(this.#popupComponent, this.#popupContainer, RenderPosition.BEFOREEND);

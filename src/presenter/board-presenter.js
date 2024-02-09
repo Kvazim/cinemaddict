@@ -21,6 +21,7 @@ export default class BoardPresenter {
   #filterPresenter = null;
   #sortListView = null;
   #filmsModel = null;
+  #commentsModel = null;
   #filmsTitleComponent = null;
   #filterModel = null;
   #filterType = FiltersType.ALL;
@@ -30,7 +31,7 @@ export default class BoardPresenter {
   #filmsBoardView = new FilmsBoardView();
   #filmsSectionView = new FilmsSectionView();
   #filmsListContainerView = new FilmsListContainerView();
-  #systemMessageComponent = null;
+  // #systemMessageComponent = null;
   #showMoreButtonComponent = null;
   #renderedFilmsCount = FILM_COUNT_PER_STEP;
   #filmPresenters = new Map();
@@ -39,14 +40,16 @@ export default class BoardPresenter {
     upperLimit: TimeLimit.UPPER_LIMIT,
   });
 
-  constructor({boardContainer, filmsModel, filterModel, popupContainer}) {
+  constructor({boardContainer, filmsModel, commentsModel, filterModel, popupContainer}) {
     this.#boardContainer = boardContainer;
     this.#filmsModel = filmsModel;
+    this.#commentsModel = commentsModel;
     this.#filterModel = filterModel;
     this.#popupContainer = popupContainer;
 
     this.#filterPresenter = new FilterPresenter({filterContainer: this.#boardContainer, filmsModel: this.#filmsModel, filterModel: this.#filterModel});
     this.#popupComponent = new PopupPresenter({popupContainer: this.#popupContainer});
+
     this.#filmsModel.addObserver(this.#handleModelEvent);
     this.#filterModel.addObserver(this.#handleModelEvent);
   }
@@ -209,11 +212,13 @@ export default class BoardPresenter {
     remove(this.#filmsTitleComponent);
   }
 
-  #createPopup(id) {
-    this.#popupComponent.init(this.films, id);
+  #createPopup = async (id) => {
+    const comments = await this.#commentsModel.init(id).then(() => this.#commentsModel.comments);
+
+    this.#popupComponent.init(this.films, id, comments);
 
     this.#popupContainer.classList.add('hide-overflow');
-  }
+  };
 
   #filmCardClickHandler = (evt) => {
     evt.preventDefault();

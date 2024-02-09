@@ -6,7 +6,9 @@ function crateGenreTemplate(genre) {
   return `<span class="film-details__genre">${genre}</span>`;
 }
 
-export default function createPopupTemplate(film) {
+export default function createPopupTemplate(film, comments) {
+  console.log(comments.lenght);
+  console.log(comments);
   const {filmInfo, userDetails} = film;
   const {title, alternativeTitle, description, totalRating, poster, ageRating, director, writers, actors, genre, duration, release} = filmInfo;
   const {alreadyWatched, favorite, watchlist} = userDetails;
@@ -83,7 +85,7 @@ export default function createPopupTemplate(film) {
 
         <div class="film-details__bottom-container">
           <section class="film-details__comments-wrap">
-            <h3 class="film-details__comments-title">Comments <span class="film-details__comments-count">4</span></h3>
+            <h3 class="film-details__comments-title">Comments <span class="film-details__comments-count">${comments.lenght}</span></h3>
 
             <ul class="film-details__comments-list">
               <li class="film-details__comment">

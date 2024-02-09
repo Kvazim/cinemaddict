@@ -4,18 +4,20 @@ import createPopupTemplate from './templates/create-popup-template';
 export default class PopupView extends AbstractStatefulView {
   #handleCloseButtonClick = null;
   #film = null;
+  #comments = [];
 
-  constructor({onCloseButtonClick, film}) {
+  constructor({onCloseButtonClick, film, comments}) {
     super();
 
     this.#handleCloseButtonClick = onCloseButtonClick;
     this.#film = film;
+    this.#comments = comments;
 
     this._restoreHandlers();
   }
 
   get template() {
-    return createPopupTemplate(this.#film);
+    return createPopupTemplate(this.#film, this.#comments);
   }
 
   #closeButtonClickHandler = () => {
