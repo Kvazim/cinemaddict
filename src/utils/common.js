@@ -7,7 +7,12 @@ const generateDescription = (description) => {
   return description;
 };
 
-const getActiveButton = (param) => param ? 'film-card__controls-item--active' : '';
+const getActiveButton = (param, isPopup = false) => {
+  if (isPopup) {
+    return param ? 'film-details__control-button--active' : '';
+  }
+  return param ? 'film-card__controls-item--active' : '';
+};
 const getFavoritesFilm = (film) => film.userDetails.favorite === true;
 const getAlreadyWatchedFilm = (film) => film.userDetails.alreadyWatched === true;
 const getWatchlistFilm = (film) => film.userDetails.watchlist === true;
@@ -28,6 +33,10 @@ const userRank = (filmsCount) => {
   return '';
 };
 
+const isEscape = (evt) => evt.key === 'Escape' || evt.key === 'Esc';
+
+const getFilmById = (films, id) => films.find((film) => film.id === id);
+
 export {
   generateDescription,
   getActiveButton,
@@ -38,4 +47,6 @@ export {
   sortByRating,
   getWatchedFilms,
   userRank,
+  isEscape,
+  getFilmById,
 };

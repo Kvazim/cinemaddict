@@ -12,6 +12,7 @@ import ShowMoreButtonView from '../view/show-more-button-view';
 import FooterView from '../view/footer-view';
 import FilmPresenter from './film-presenter';
 import FilterPresenter from './filter-presenter';
+import PopupPresenter from './popup-presenter';
 import { sortByDate } from '../utils/date';
 import { sortByRating } from '../utils/common';
 
@@ -24,6 +25,8 @@ export default class BoardPresenter {
   #filterModel = null;
   #filterType = FiltersType.ALL;
   #currentSortType = SortType.DEFAULT;
+  #popupContainer = null;
+  #popupComponent = null;
   #filmsBoardView = new FilmsBoardView();
   #filmsSectionView = new FilmsSectionView();
   #filmsListContainerView = new FilmsListContainerView();
@@ -36,13 +39,14 @@ export default class BoardPresenter {
     upperLimit: TimeLimit.UPPER_LIMIT,
   });
 
-  constructor({boardContainer, filmsModel, filterModel}) {
+  constructor({boardContainer, filmsModel, filterModel, popupContainer}) {
     this.#boardContainer = boardContainer;
     this.#filmsModel = filmsModel;
     this.#filterModel = filterModel;
+    this.#popupContainer = popupContainer;
 
     this.#filterPresenter = new FilterPresenter({filterContainer: this.#boardContainer, filmsModel: this.#filmsModel, filterModel: this.#filterModel});
-
+    this.#popupComponent = new PopupPresenter({popupContainer: this.#popupContainer});
     this.#filmsModel.addObserver(this.#handleModelEvent);
     this.#filterModel.addObserver(this.#handleModelEvent);
   }
@@ -89,7 +93,7 @@ export default class BoardPresenter {
 
     switch (actionType) {
       case UserAction.UPDATE_FILM:
-        // this.#filmPresenters.get(update.id).setSaving();
+        this.#filmPresenters.get(update.id).setSaving();
         try {
           await this.#filmsModel.updateFilm(updateType, update);
         } catch (error) {
@@ -189,6 +193,8 @@ export default class BoardPresenter {
     if(resetSortType) {
       this.#currentSortType = SortType.DEFAULT;
     }
+
+    this.#filmsSectionView.element.removeEventListener('click', this.#filmCardClickHandler);
   }
 
   #renderSystemMessage(message) {
@@ -202,6 +208,20 @@ export default class BoardPresenter {
     remove(this.#filmsSectionView);
     remove(this.#filmsTitleComponent);
   }
+
+  #createPopup(id) {
+    this.#popupComponent.init(this.films, id);
+
+    this.#popupContainer.classList.add('hide-overflow');
+  }
+
+  #filmCardClickHandler = (evt) => {
+    evt.preventDefault();
+
+    if (evt.target.parentElement !== null && evt.target.parentElement.tagName === 'A') {
+      this.#createPopup(evt.target.offsetParent.dataset.id);
+    }
+  };
 
   #renderBoard() {
     this.#filterPresenter.init();
@@ -235,5 +255,7 @@ export default class BoardPresenter {
     if (filmsCount > this.#renderedFilmsCount) {
       this.#renderShowMoreButton();
     }
+
+    this.#filmsSectionView.element.addEventListener('click', this.#filmCardClickHandler);
   }
 }

@@ -22,7 +22,7 @@ export default class FilterListView extends AbstractView {
 
   #filterTypeChangeHandler = (evt) => {
     evt.preventDefault();
-    // TODO достаточно ли такой проверки?
+    // TODO достаточно ли такой проверки? Если мы находимся в фильтре фаворит и нажимаем удалить должна ли перерисовываться борда
 
     if (evt.target.tagName !== 'A' || evt.target.getAttribute('href') === null) {
       return;

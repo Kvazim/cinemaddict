@@ -30,6 +30,7 @@ const DateFormat = {
   DATE_YEAR: 'YYYY',
   MINUTES: 'mm[m]',
   HOUR_MINUTES: 'H[h] mm[m]',
+  DAY_MONTH_YEAR: 'D MMMM YYYY',
 };
 
 const UserAction = {
